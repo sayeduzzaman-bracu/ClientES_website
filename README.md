@@ -1,9 +1,7 @@
 # ClientES website
 
-This standalone site explains ClientES and links buyers to external checkout or the owner for manual bKash. The product and account workspace run on a separate Worker.
+This static website mirrors the existing ClientES app landing page. Edit the public copy in `site/index.html`. The current copy uses the ClientOS name to match the app.
 
-Set the public Gumroad checkout URL and ClientES product origin in `site/public-config.js` when the final addresses are available. The site's `wrangler.jsonc` serves the `site/` folder directly. The website repository needs only this folder and its configuration.
+The access and sign-in buttons link to the existing product Worker. The manual bKash instructions and owner contact links match the app homepage. A setting for a future Gumroad checkout URL is reserved in `site/public-config.js`. The website needs no customer data or service credentials.
 
-For a local preview from this directory, run `python -m http.server 4174 --bind 127.0.0.1 --directory site` and open `http://127.0.0.1:4174/`. Local links to the product default to port 4173. To start the synthetic product preview on that port, run `node tools/ui-preview-v048.mjs . 4173 --activation` from the product folder with dependencies installed.
-
-Live storefront links are enabled once configured. No customer records or service credentials belong in the website repository.
+Run `python -m http.server 4174 --bind 127.0.0.1 --directory site` for a local preview. Wrangler serves the `site/` folder directly.

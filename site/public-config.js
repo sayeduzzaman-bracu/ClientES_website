@@ -1,3 +1,2 @@
-// Public URLs for this website. Configure both before publishing.
+// Reserved for the public Gumroad checkout URL when supplied.
 export const gumroadCheckout = ''
-export const productOrigin = ''

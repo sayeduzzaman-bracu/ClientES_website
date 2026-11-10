@@ -1,35 +1,55 @@
-import { gumroadCheckout, productOrigin } from './public-config.js'
+const header = document.querySelector('.site-header')
+const menu = header.querySelector('.header-menu-toggle')
+const navigation = document.getElementById(menu.getAttribute('aria-controls'))
 
-function httpsUrl(value) {
+function setMenu(open) {
+  menu.setAttribute('aria-expanded', String(open))
+  navigation.classList.toggle('is-open', open)
+}
+
+menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'))
+navigation.addEventListener('click', event => {
+  if (event.target.closest('a')) setMenu(false)
+})
+document.addEventListener('pointerdown', event => {
+  if (!header.contains(event.target)) setMenu(false)
+})
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+    setMenu(false)
+    menu.focus()
+  }
+})
+window.matchMedia('(min-width: 640px)').addEventListener('change', () => setMenu(false))
+
+const appearance = header.querySelector('.theme-preference select')
+const system = window.matchMedia('(prefers-color-scheme: dark)')
+const preferenceKey = 'clientos.theme-preference.v1'
+
+function readPreference() {
   try {
-    const url = new URL(value)
-    return url.protocol === 'https:' && !url.username && !url.password ? url : null
+    const value = localStorage.getItem(preferenceKey)
+    return value === 'light' || value === 'dark' ? value : 'system'
   } catch {
-    return null
+    return 'system'
   }
 }
 
-const gumroad = httpsUrl(gumroadCheckout)
-const product = httpsUrl(productOrigin)
-const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
-const localhostProduct = local ? 'http://127.0.0.1:4173' : ''
-const productBase = product?.origin || localhostProduct
+function applyPreference() {
+  const dark = appearance.value === 'dark' || (appearance.value === 'system' && system.matches)
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+}
 
-function enableLink(key, href) {
-  if (!href) return
-  for (const link of document.querySelectorAll(`[data-link="${key}"]`)) {
-    link.href = href
-    link.hidden = false
+appearance.value = readPreference()
+applyPreference()
+appearance.addEventListener('change', () => {
+  applyPreference()
+  try { localStorage.setItem(preferenceKey, appearance.value) } catch { /* Keep the current page usable. */ }
+})
+system.addEventListener('change', applyPreference)
+window.addEventListener('storage', event => {
+  if (event.key === preferenceKey || event.key === null) {
+    appearance.value = readPreference()
+    applyPreference()
   }
-  const placeholder = document.querySelector(`[data-placeholder="${key}"]`)
-  if (placeholder) placeholder.hidden = true
-}
-
-if (gumroad && (gumroad.hostname === 'gumroad.com' || gumroad.hostname.endsWith('.gumroad.com')))
-  enableLink('gumroad', gumroad.href)
-if (productBase) {
-  enableLink('account', productBase + '/account')
-  enableLink('activate', productBase + '/activate')
-  enableLink('privacy', productBase + '/privacy-policy')
-  enableLink('refund', productBase + '/refund-policy')
-}
+})
