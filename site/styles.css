@@ -1,0 +1,41 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color-scheme: dark;
+  color: #faf6ff;
+  background: #15101e;
+  line-height: 1.65;
+  --line: #423650;
+  --muted: #ddd1e6;
+  --accent: #dab2ff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+.wrap { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
+.site-header { border-block: 1px solid var(--line); background: #1a1324; }
+.header-row { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-block: .75rem; }
+nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.wordmark { font-size: 1.4rem; color: inherit; text-decoration: none; font-weight: 800; }
+.wordmark span { color: var(--accent); }
+.hero { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; gap: clamp(1.75rem, 5vw, 5rem); padding-block: clamp(3rem, 8vw, 6rem); }
+.cover { display: block; height: auto; width: 100%; border-radius: 1rem; border: 1px solid var(--line); }
+h1, h2, h3 { line-height: 1.15; margin-block: .35em .45em; }
+h1 { font-size: clamp(2.4rem, 5.4vw, 4.5rem); letter-spacing: -.035em; }
+h2 { font-size: clamp(1.9rem, 3.3vw, 2.65rem); }
+.lead { font-size: 1.15rem; max-width: 62ch; }
+p { color: var(--muted); margin-block: .5rem 1rem; }
+.eyebrow { font-size: .82rem; font-weight: 750; letter-spacing: .09em; color: var(--accent); }
+.actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+.button { display: inline-flex; align-items: center; min-height: 44px; padding: .6rem 1rem; border-radius: .55rem; border: 1px solid var(--line); text-decoration: none; font-weight: 700; }
+.primary { background: var(--accent); color: #22152e; border-color: var(--accent); }
+.secondary { background: #261c32; color: #f7e8ff; }
+.section { background: #1c1527; border-block: 1px solid var(--line); }
+.section, .purchase { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-block: 1.5rem; }
+.steps article { padding: 1.2rem; background: #21182c; border: 1px solid var(--line); border-radius: .75rem; }
+@media (max-width: 720px) {
+  .hero, .steps { grid-template-columns: 1fr; }
+  .cover { max-width: 22rem; }
+}
